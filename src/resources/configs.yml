@@ -1,0 +1,29 @@
+gui:
+  title: "&dRankup GUI"
+  borders:
+    icon: BLACK_STAINED_GLASS_PANE
+    name: " "
+
+ranks:
+  rank1:
+    icon: "DIAMOND_SWORD"
+    name: "The rank"
+    lore:
+      - "Rank: {rank}"
+      - "Conditions to upgrade:"
+      - "    - 1000$"
+      - "    - 5 Mined blocks"
+      - "    - 500XP"
+      - " "
+      - "Upgradable: {upgradable}"
+    rankup-message:
+      - "Good job {player}!"
+      - "You reach the rank \"{rank}\"!"
+    conditions:
+      money: 1000
+      mined_blocks: 5
+      xp: 500
+    commands:
+      - "lprankup {player} to rank"
+      - "money remove 1000 from {player}"
+      - "xp remove {player} 500"

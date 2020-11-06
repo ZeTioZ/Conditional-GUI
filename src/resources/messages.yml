@@ -1,0 +1,23 @@
+prefix: "&8[&aLPRankup&8] "
+help-command:
+  - "&d/lprankup &c» &2Open the rank-up GUI"
+  - "&d/lprankup open &c» &2Open the rank-up GUI"
+  - "&d/lprankup help &c» &2Display the help page"
+  - "&d/lprankup reload &c» &2Reload the plugin"
+
+upgradable: "&aUpgradable!"
+not-upgradable: "&cNot upgradable!"
+
+reload-command:
+  - "&aPlugin reloaded!"
+
+errors:
+  no-ranks-available:
+    - "&cSorry, but no ranks upgrades are available yet!"
+  not-enough-permission:
+    - "&cSorry, but you don't have enough permission to do that!"
+  must-be-a-player:
+    - "&cSorry, but you must be a player in order to do that!"
+  invalid-icon:
+    - "An error occurred. The icon \"{icon}\" isn't a valid material !"
+    - "Please, change it to a valid material from https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html"
