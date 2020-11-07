@@ -6,7 +6,7 @@ gui:
 
 ranks:
   rank1:
-    icon: "DIAMOND_SWORD"
+    icon: DIAMOND_SWORD
     name: "The rank"
     lore:
       - "Rank: {rank}"

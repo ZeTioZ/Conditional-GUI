@@ -46,36 +46,34 @@ public final class ConditionsChecker {
 						if(database.getInt("players." + p.getName() + ".kills") >= configsFile.getInt("ranks." + rankName + ".conditions.kills"))
 						{
 							conditionsRepected++;
-							break;
 						}
+						break;
 					case MONEY:
 						if(LPRankupMain.getEconomy().getBalance(p) >= configsFile.getDouble("ranks." + rankName + ".conditions.money"))
 						{
 							conditionsRepected++;
-							break;
 						}
+						break;
 					case XP:
 						if(p.getTotalExperience() >= configsFile.getDouble("ranks." + rankName + ".conditions.xp"))
 						{
 							conditionsRepected++;
-							break;
 						}
+						break;
 					case MINED_BLOCKS:
 						if(database.getInt("players." + p.getName() + ".mined_blocks") >= configsFile.getInt("ranks." + rankName + ".conditions.mined_blocks"))
 						{
 							conditionsRepected++;
-							break;
 						}
+						break;
 					case RANK_NEEDED:
 						if(LPRankupMain.getPermissions().playerInGroup(p, configsFile.getString("ranks." + rankName + ".conditions.rank_needed")))
 						{
 							conditionsRepected++;
-							break;
 						}
-					default:
 						break;
-				}
-				
+					default:
+				}	
 			}
 			if(conditionsRepected == conditionsToRespect)
 			{
