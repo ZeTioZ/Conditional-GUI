@@ -1,4 +1,4 @@
-package fr.zetioz.lprankup;
+package fr.zetioz.conditionalgui;
 
 import java.io.FileNotFoundException;
 
@@ -7,15 +7,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
-public class LPRankupMinedBlocksHandler implements Listener
+public class ConditionalGUIMinedBlocksHandler implements Listener
 {
 	private YamlConfiguration database;
 
-	public LPRankupMinedBlocksHandler()
+	public ConditionalGUIMinedBlocksHandler()
 	{
 		try
 		{
-			database = LPRankupMain.getFilesManager().getSimpleYaml("database");
+			database = ConditionalGUIMain.getFilesManager().getSimpleYaml("database");
 		}
 		catch (FileNotFoundException e)
 		{

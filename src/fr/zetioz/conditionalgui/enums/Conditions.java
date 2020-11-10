@@ -1,4 +1,4 @@
-package fr.zetioz.lprankup.enums;
+package fr.zetioz.conditionalgui.enums;
 
 public enum Conditions {
 	KILL,

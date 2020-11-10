@@ -1,4 +1,4 @@
-package fr.zetioz.lprankup.utils;
+package fr.zetioz.conditionalgui.utils;
 
 import java.util.List;
 

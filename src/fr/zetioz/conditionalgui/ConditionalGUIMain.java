@@ -1,17 +1,17 @@
-package fr.zetioz.lprankup;
+package fr.zetioz.conditionalgui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import fr.zetioz.lprankup.utils.FilesManager;
+import fr.zetioz.conditionalgui.utils.FilesManager;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
-public class LPRankupMain extends JavaPlugin
+public class ConditionalGUIMain extends JavaPlugin
 {	
-	private static LPRankupMain plugin;
+	private static ConditionalGUIMain plugin;
 	private static FilesManager filesManager;
 	private static Economy econ = null;
     private static Permission perms = null;
@@ -24,9 +24,9 @@ public class LPRankupMain extends JavaPlugin
 		filesManager.createSimpleYaml("configs");
 		filesManager.createSimpleYaml("messages");
 		filesManager.createSimpleYaml("database");
-		registerEvents(plugin, new LPRankupGUIHandler(), new LPRankupJoinHandler(), new LPRankupDeathHandler(), new LPRankupMinedBlocksHandler());
+		registerEvents(plugin, new ConditionalGUIGUIHandler(), new ConditionalGUIJoinHandler(), new ConditionalGUIDeathHandler(), new ConditionalGUIMinedBlocksHandler());
 		
-		getCommand("lprankup").setExecutor(new LPRankupCommandHandler());
+		getCommand("lprankup").setExecutor(new ConditionalGUICommandHandler());
 		
         if (!setupEconomy() ) {
             getLogger().severe("Disabled due to no Vault dependency found!");
@@ -63,7 +63,7 @@ public class LPRankupMain extends JavaPlugin
         return econ != null;
     }
 	
-	public static LPRankupMain getPlugin()
+	public static ConditionalGUIMain getPlugin()
 	{
 		return plugin;
 	}
@@ -81,7 +81,7 @@ public class LPRankupMain extends JavaPlugin
         return perms;
     }
 	
-	private void registerEvents(LPRankupMain plugin, Listener... listeners)
+	private void registerEvents(ConditionalGUIMain plugin, Listener... listeners)
 	{
 		for(Listener listener : listeners)
 		{

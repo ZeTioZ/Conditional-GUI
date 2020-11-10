@@ -1,4 +1,4 @@
-package fr.zetioz.lprankup;
+package fr.zetioz.conditionalgui;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -15,11 +15,11 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import fr.zetioz.lprankup.utils.Color;
-import fr.zetioz.lprankup.utils.ConditionsChecker;
-import fr.zetioz.lprankup.utils.ItemBuilder;
+import fr.zetioz.conditionalgui.utils.Color;
+import fr.zetioz.conditionalgui.utils.ConditionsChecker;
+import fr.zetioz.conditionalgui.utils.ItemBuilder;
 
-public class LPRankupGUIHandler implements Listener
+public class ConditionalGUIGUIHandler implements Listener
 {
 	
 	private YamlConfiguration messagesFile;
@@ -27,14 +27,14 @@ public class LPRankupGUIHandler implements Listener
 	private ConditionsChecker conditionChecker;
 	private String prefix;
 	
-	public LPRankupGUIHandler()
+	public ConditionalGUIGUIHandler()
 	{
 		try
 		{
-			messagesFile = LPRankupMain.getFilesManager().getSimpleYaml("messages");
-			configsFile = LPRankupMain.getFilesManager().getSimpleYaml("configs");
+			messagesFile = ConditionalGUIMain.getFilesManager().getSimpleYaml("messages");
+			configsFile = ConditionalGUIMain.getFilesManager().getSimpleYaml("configs");
 			prefix = Color.color(messagesFile.getString("prefix"));
-			conditionChecker = new ConditionsChecker(configsFile, LPRankupMain.getFilesManager().getSimpleYaml("database"));
+			conditionChecker = new ConditionsChecker(configsFile, ConditionalGUIMain.getFilesManager().getSimpleYaml("database"));
 		}
 		catch (FileNotFoundException e)
 		{
@@ -57,7 +57,7 @@ public class LPRankupGUIHandler implements Listener
 			catch(IllegalArgumentException ex) {
 				for(String line : messagesFile.getStringList("errors.invalid-icon"))
 				{
-					LPRankupMain.getPlugin().getLogger().severe(line.replace("{icon}", configsFile.getString("gui.borders.icon").toUpperCase()));
+					ConditionalGUIMain.getPlugin().getLogger().severe(line.replace("{icon}", configsFile.getString("gui.borders.icon").toUpperCase()));
 				}
 				return;
 			}
@@ -108,7 +108,7 @@ public class LPRankupGUIHandler implements Listener
 		catch(IllegalArgumentException ex) {
 			for(String line : messagesFile.getStringList("errors.invalid-icon"))
 			{
-				LPRankupMain.getPlugin().getLogger().severe(line.replace("{icon}", configsFile.getString("gui.borders.icon").toUpperCase()));
+				ConditionalGUIMain.getPlugin().getLogger().severe(line.replace("{icon}", configsFile.getString("gui.borders.icon").toUpperCase()));
 			}
 			return;
 		}
@@ -151,7 +151,7 @@ public class LPRankupGUIHandler implements Listener
 				{
 					for(String line : messagesFile.getStringList("errors.invalid-icon"))
 					{
-						LPRankupMain.getPlugin().getLogger().severe(line.replace("{icon}", configsFile.getString("ranks." + rankList.get(z) + ".icon").toUpperCase()));
+						ConditionalGUIMain.getPlugin().getLogger().severe(line.replace("{icon}", configsFile.getString("ranks." + rankList.get(z) + ".icon").toUpperCase()));
 						ex.printStackTrace();
 					}
 				}

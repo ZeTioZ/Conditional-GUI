@@ -1,4 +1,4 @@
-package fr.zetioz.lprankup.utils;
+package fr.zetioz.conditionalgui.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,11 +10,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import fr.zetioz.lprankup.LPRankupMain;
+import fr.zetioz.conditionalgui.ConditionalGUIMain;
 
 public class FilesManager
 {
-	private static LPRankupMain plugin = LPRankupMain.getPlugin();
+	private static ConditionalGUIMain plugin = ConditionalGUIMain.getPlugin();
 	private Map<String, YamlConfiguration> simpleYaml;
 	
 	public FilesManager()

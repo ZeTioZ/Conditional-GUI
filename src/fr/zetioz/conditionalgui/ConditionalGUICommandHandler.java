@@ -1,4 +1,4 @@
-package fr.zetioz.lprankup;
+package fr.zetioz.conditionalgui;
 
 import java.io.FileNotFoundException;
 
@@ -10,18 +10,18 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import fr.zetioz.lprankup.utils.Color;
+import fr.zetioz.conditionalgui.utils.Color;
 
-public class LPRankupCommandHandler implements CommandExecutor
+public class ConditionalGUICommandHandler implements CommandExecutor
 {
 	private YamlConfiguration messagesFile;
 	private String prefix;
 	
-	public LPRankupCommandHandler()
+	public ConditionalGUICommandHandler()
 	{
 		try
 		{
-			this.messagesFile = LPRankupMain.getFilesManager().getSimpleYaml("messages");
+			this.messagesFile = ConditionalGUIMain.getFilesManager().getSimpleYaml("messages");
 			this.prefix = Color.color(messagesFile.getString("prefix"));
 		}
 		catch (FileNotFoundException e) {
@@ -31,13 +31,13 @@ public class LPRankupCommandHandler implements CommandExecutor
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String msg, String[] args) {
-		if(cmd.getName().equalsIgnoreCase("lprankup"))
+		if(cmd.getName().equalsIgnoreCase("conditionalgui"))
 		{
 			if(args.length == 0)
 			{
 				if(sender instanceof Player)
 				{						
-					new LPRankupGUIHandler().openGUI((Player) sender);
+					new ConditionalGUIGUIHandler().openGUI((Player) sender);
 				}
 				else
 				{
@@ -53,13 +53,13 @@ public class LPRankupCommandHandler implements CommandExecutor
 				{
 					sendHelpPage(sender);
 				}
-				else if(args[0].equalsIgnoreCase("reload") && sender.hasPermission("lprankup.reload"))
+				else if(args[0].equalsIgnoreCase("reload") && sender.hasPermission("conditionalgui.reload"))
 				{
 					for(String line : Color.color(messagesFile.getStringList("reload-command")))
 					{
 						sender.sendMessage(prefix + line);
 					}
-					Plugin plugin = LPRankupMain.getPlugin();
+					Plugin plugin = ConditionalGUIMain.getPlugin();
 					Bukkit.getPluginManager().disablePlugin(plugin);
 					Bukkit.getPluginManager().enablePlugin(plugin);
 				}
@@ -67,7 +67,7 @@ public class LPRankupCommandHandler implements CommandExecutor
 				{
 					if(sender instanceof Player)
 					{						
-						new LPRankupGUIHandler().openGUI((Player) sender);
+						new ConditionalGUIGUIHandler().openGUI((Player) sender);
 					}
 					else
 					{

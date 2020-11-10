@@ -1,4 +1,4 @@
-package fr.zetioz.lprankup.utils;
+package fr.zetioz.conditionalgui.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import fr.zetioz.lprankup.LPRankupMain;
-import fr.zetioz.lprankup.enums.Conditions;
+import fr.zetioz.conditionalgui.ConditionalGUIMain;
+import fr.zetioz.conditionalgui.enums.Conditions;
 
 public final class ConditionsChecker {
 
@@ -49,7 +49,7 @@ public final class ConditionsChecker {
 						}
 						break;
 					case MONEY:
-						if(LPRankupMain.getEconomy().getBalance(p) >= configsFile.getDouble("ranks." + rankName + ".conditions.money"))
+						if(ConditionalGUIMain.getEconomy().getBalance(p) >= configsFile.getDouble("ranks." + rankName + ".conditions.money"))
 						{
 							conditionsRepected++;
 						}
@@ -67,7 +67,7 @@ public final class ConditionsChecker {
 						}
 						break;
 					case RANK_NEEDED:
-						if(LPRankupMain.getPermissions().playerInGroup(p, configsFile.getString("ranks." + rankName + ".conditions.rank_needed")))
+						if(ConditionalGUIMain.getPermissions().playerInGroup(p, configsFile.getString("ranks." + rankName + ".conditions.rank_needed")))
 						{
 							conditionsRepected++;
 						}
