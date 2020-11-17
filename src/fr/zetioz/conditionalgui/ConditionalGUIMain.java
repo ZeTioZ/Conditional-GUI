@@ -26,7 +26,7 @@ public class ConditionalGUIMain extends JavaPlugin
 		filesManager.createSimpleYaml("database");
 		registerEvents(plugin, new ConditionalGUIGUIHandler(), new ConditionalGUIJoinHandler(), new ConditionalGUIDeathHandler(), new ConditionalGUIMinedBlocksHandler());
 		
-		getCommand("lprankup").setExecutor(new ConditionalGUICommandHandler());
+		getCommand("conditionalgui").setExecutor(new ConditionalGUICommandHandler());
 		
         if (!setupEconomy() ) {
             getLogger().severe("Disabled due to no Vault dependency found!");
