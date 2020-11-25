@@ -1,10 +1,10 @@
 name: Conditional-GUI
-version: 0.0.4
+version: 0.0.5
 author: ZeTioZ
 main: fr.zetioz.conditionalgui.ConditionalGUIMain
 api-version: 1.16
 depend: [Vault]
 commands:
   conditionalgui:
-    aliases: [cg, cdg]
+    aliases: [cg, cdg, rankup, rkup]
     description: Main Conditional GUI command

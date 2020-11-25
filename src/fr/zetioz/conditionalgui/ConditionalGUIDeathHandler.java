@@ -9,7 +9,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class ConditionalGUIDeathHandler implements Listener
 {
-public YamlConfiguration database;
+	private YamlConfiguration database;
 	
 	public ConditionalGUIDeathHandler()
 	{
@@ -26,6 +26,9 @@ public YamlConfiguration database;
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent e)
 	{
-		database.set("players." + e.getEntity().getKiller().getName() + ".kills", database.getInt("players." + e.getEntity().getKiller().getName() + ".kills") + 1);
+		if(e.getEntity().getKiller() != null)
+		{			
+			database.set("players." + e.getEntity().getKiller().getName() + ".kills", database.getInt("players." + e.getEntity().getKiller().getName() + ".kills") + 1);
+		}
 	}
 }
