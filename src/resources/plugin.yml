@@ -1,9 +1,10 @@
 name: Conditional-GUI
-version: 0.0.5
+version: 0.0.6
 author: ZeTioZ
 main: fr.zetioz.conditionalgui.ConditionalGUIMain
 api-version: 1.16
 depend: [Vault]
+softdepend: [mcMMO]
 commands:
   conditionalgui:
     aliases: [cg, cdg, rankup, rkup]

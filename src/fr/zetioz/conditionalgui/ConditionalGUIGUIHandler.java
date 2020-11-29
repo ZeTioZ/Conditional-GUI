@@ -24,6 +24,7 @@ public class ConditionalGUIGUIHandler implements Listener
 	
 	private YamlConfiguration messagesFile;
 	private YamlConfiguration configsFile;
+	private YamlConfiguration database;
 	private ConditionsChecker conditionChecker;
 	private String prefix;
 	
@@ -33,6 +34,7 @@ public class ConditionalGUIGUIHandler implements Listener
 		{
 			messagesFile = ConditionalGUIMain.getFilesManager().getSimpleYaml("messages");
 			configsFile = ConditionalGUIMain.getFilesManager().getSimpleYaml("configs");
+			database = ConditionalGUIMain.getFilesManager().getSimpleYaml("database");
 			prefix = Color.color(messagesFile.getString("prefix"));
 			conditionChecker = new ConditionsChecker(configsFile, ConditionalGUIMain.getFilesManager().getSimpleYaml("database"));
 		}
@@ -65,8 +67,22 @@ public class ConditionalGUIGUIHandler implements Listener
 			{
 				Set<String> ranksList = configsFile.getConfigurationSection("ranks").getKeys(false);
 				String itemName = e.getCurrentItem().getItemMeta().getDisplayName();
+				List<String> ownedRanks = database.getStringList("players." + p.getName() + ".owned-ranks");
 				if(ranksList.contains(itemName) && conditionChecker.isPassed(p, itemName))
 				{
+					if(!ownedRanks.contains(itemName))
+					{
+						ownedRanks.add(itemName);
+						database.set("players." + p.getName() + ".owned-ranks", ownedRanks);
+					}
+					else if(ownedRanks.contains(itemName) && !configsFile.getBoolean("ranks." + itemName + ".recaimable"))
+					{
+						for(String line : Color.color(messagesFile.getStringList("errors.already-owned")))
+						{
+							p.sendMessage(prefix + line);
+						}
+						return;
+					}
 					for(String command : configsFile.getStringList("ranks." + itemName + ".commands"))
 					{
 						Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), command.replace("{player}", p.getName()));
@@ -78,6 +94,20 @@ public class ConditionalGUIGUIHandler implements Listener
 						p.sendMessage(prefix + line);
 					}
 					p.closeInventory();
+				}
+				else if(!conditionChecker.isPassed(p, itemName) && (!ownedRanks.contains(itemName) || (ownedRanks.contains(itemName) && configsFile.getBoolean("ranks." + itemName + ".recaimable"))))
+				{
+					for(String line : Color.color(messagesFile.getStringList("errors.conditions-not-met")))
+					{
+						p.sendMessage(prefix + line);
+					}
+				}
+				else if(!conditionChecker.isPassed(p, itemName) && ownedRanks.contains(itemName) && !configsFile.getBoolean("ranks." + itemName + ".recaimable"))
+				{
+					for(String line : Color.color(messagesFile.getStringList("errors.already-owned")))
+					{
+						p.sendMessage(prefix + line);
+					}
 				}
 			}
 		}
@@ -134,9 +164,18 @@ public class ConditionalGUIGUIHandler implements Listener
 					 * 			y take a count of the row where the cursor is to check if it's the top or bottom line
 					 */
 					if(addInner)
-					{						
+					{
 						List<String> lore = new ArrayList<>();
-						String upgradable = conditionChecker.isPassed(player, rankList.get(z)) ? Color.color(messagesFile.getString("upgradable")) : Color.color(messagesFile.getString("not-upgradable"));
+						List<String> ownedRanks = database.getStringList("players." + player.getName() + ".owned-ranks");
+						String upgradable;
+						if(!ownedRanks.contains(rankList.get(z)) || ownedRanks.contains(rankList.get(z)) && configsFile.getBoolean("ranks." + rankList.get(z) + ".recaimable"))
+						{
+							upgradable = conditionChecker.isPassed(player, rankList.get(z)) ? Color.color(messagesFile.getString("upgradable")) : Color.color(messagesFile.getString("not-upgradable"));
+						}
+						else
+						{
+							upgradable = Color.color(messagesFile.getString("already-owned"));
+						}
 						for(String loreLine : Color.color(configsFile.getStringList("ranks." + rankList.get(z) + ".lore"))) {
 							loreLine = loreLine.replace("{upgradable}", upgradable).replace("{rank}", Color.color(configsFile.getString("ranks." + rankList.get(z) + ".name")));
 							lore.add(loreLine);

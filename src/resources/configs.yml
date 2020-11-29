@@ -19,11 +19,11 @@ ranks:
     rankup-message:
       - "Good job {player}!"
       - "You reach the rank \"{rank}\"!"
+    recaimable: true
     conditions:
       money: 1000
       mined_blocks: 5
       xp: 500
     commands:
-      - "lprankup {player} to rank"
-      - "money remove 1000 from {player}"
-      - "xp remove {player} 500"
+      - "eco take {player} 1000"
+      - "xp take {player} 500"

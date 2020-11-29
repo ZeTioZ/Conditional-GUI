@@ -7,11 +7,16 @@ help-command:
 
 upgradable: "&aUpgradable!"
 not-upgradable: "&cNot upgradable!"
+already-owned: "&2Already owned!"
 
 reload-command:
   - "&aPlugin reloaded!"
 
 errors:
+  already-owned:
+    - "&cYou already own it and it's not reclaimable!"
+  conditions-not-met:
+    - "&cSorry, but you don't meet the conditions to claim this!"
   no-ranks-available:
     - "&cSorry, but no ranks upgrades are available yet!"
   not-enough-permission:
