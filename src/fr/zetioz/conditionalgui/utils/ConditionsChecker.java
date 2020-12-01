@@ -45,6 +45,7 @@ public final class ConditionsChecker {
 				switch(conditionToCheck)
 				{
 					case KILL:
+						System.out.println("KILL: " + conditionsListRaw.get(i));
 						if(database.getInt("players." + p.getName() + ".kills") >= configsFile.getInt("ranks." + rankName + ".conditions." + conditionsListRaw.get(i)))
 						{
 							conditionsRepected++;

@@ -15,7 +15,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import fr.zetioz.conditionalgui.utils.Color;
+import fr.zetioz.conditionalgui.utils.ColorUtils;
 import fr.zetioz.conditionalgui.utils.ConditionsChecker;
 import fr.zetioz.conditionalgui.utils.ItemBuilder;
 
@@ -35,7 +35,7 @@ public class ConditionalGUIGUIHandler implements Listener
 			messagesFile = ConditionalGUIMain.getFilesManager().getSimpleYaml("messages");
 			configsFile = ConditionalGUIMain.getFilesManager().getSimpleYaml("configs");
 			database = ConditionalGUIMain.getFilesManager().getSimpleYaml("database");
-			prefix = Color.color(messagesFile.getString("prefix"));
+			prefix = ColorUtils.color(messagesFile.getString("prefix"));
 			conditionChecker = new ConditionsChecker(configsFile, ConditionalGUIMain.getFilesManager().getSimpleYaml("database"));
 		}
 		catch (FileNotFoundException e)
@@ -47,14 +47,14 @@ public class ConditionalGUIGUIHandler implements Listener
 	@EventHandler
 	public void onGUIClick(InventoryClickEvent e)
 	{
-		if(e.getClickedInventory() != null && e.getView().getTitle() != null && e.getView().getTitle().equals(Color.color(configsFile.getString("gui.title"))))
+		if(e.getClickedInventory() != null && e.getView().getTitle() != null && e.getView().getTitle().equals(ColorUtils.color(configsFile.getString("gui.title"))))
 		{
 			// Gui management
 			e.setCancelled(true);
 			Player p = (Player) e.getWhoClicked();
 			ItemStack border = null;
 			try {			
-				border = ItemBuilder.build(Material.valueOf(configsFile.getString("gui.borders.icon").toUpperCase()), Color.color(configsFile.getString("gui.borders.name")));
+				border = ItemBuilder.build(Material.valueOf(configsFile.getString("gui.borders.icon").toUpperCase()), ColorUtils.color(configsFile.getString("gui.borders.name")));
 			}
 			catch(IllegalArgumentException ex) {
 				for(String line : messagesFile.getStringList("errors.invalid-icon"))
@@ -66,7 +66,7 @@ public class ConditionalGUIGUIHandler implements Listener
 			if(e.getCurrentItem() != null && e.getCurrentItem() != border && e.getCurrentItem().getType() != Material.AIR)
 			{
 				Set<String> ranksList = configsFile.getConfigurationSection("ranks").getKeys(false);
-				String itemName = e.getCurrentItem().getItemMeta().getDisplayName();
+				String itemName = ColorUtils.discolor(e.getCurrentItem().getItemMeta().getDisplayName());
 				List<String> ownedRanks = database.getStringList("players." + p.getName() + ".owned-ranks");
 				if(ranksList.contains(itemName) && conditionChecker.isPassed(p, itemName))
 				{
@@ -77,7 +77,7 @@ public class ConditionalGUIGUIHandler implements Listener
 					}
 					else if(ownedRanks.contains(itemName) && !configsFile.getBoolean("ranks." + itemName + ".recaimable"))
 					{
-						for(String line : Color.color(messagesFile.getStringList("errors.already-owned")))
+						for(String line : ColorUtils.color(messagesFile.getStringList("errors.already-owned")))
 						{
 							p.sendMessage(prefix + line);
 						}
@@ -87,24 +87,24 @@ public class ConditionalGUIGUIHandler implements Listener
 					{
 						Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), command.replace("{player}", p.getName()));
 					}
-					for(String line : Color.color(configsFile.getStringList("ranks." + itemName + ".rankup-message")))
+					for(String line : ColorUtils.color(configsFile.getStringList("ranks." + itemName + ".rankup-message")))
 					{
 						line = line.replace("{player}", p.getName())
-								.replace("{rank}", Color.color(configsFile.getString("ranks." + itemName + ".name")));
+								.replace("{rank}", ColorUtils.color(configsFile.getString("ranks." + itemName + ".name")));
 						p.sendMessage(prefix + line);
 					}
 					p.closeInventory();
 				}
 				else if(!conditionChecker.isPassed(p, itemName) && (!ownedRanks.contains(itemName) || (ownedRanks.contains(itemName) && configsFile.getBoolean("ranks." + itemName + ".recaimable"))))
 				{
-					for(String line : Color.color(messagesFile.getStringList("errors.conditions-not-met")))
+					for(String line : ColorUtils.color(messagesFile.getStringList("errors.conditions-not-met")))
 					{
 						p.sendMessage(prefix + line);
 					}
 				}
 				else if(!conditionChecker.isPassed(p, itemName) && ownedRanks.contains(itemName) && !configsFile.getBoolean("ranks." + itemName + ".recaimable"))
 				{
-					for(String line : Color.color(messagesFile.getStringList("errors.already-owned")))
+					for(String line : ColorUtils.color(messagesFile.getStringList("errors.already-owned")))
 					{
 						p.sendMessage(prefix + line);
 					}
@@ -115,13 +115,25 @@ public class ConditionalGUIGUIHandler implements Listener
 	
 	public void openGUI(Player player)
 	{
-		List<String> rankList = new ArrayList<>(configsFile.getConfigurationSection("ranks").getKeys(false));
+		List<String> rankList;
+		if(configsFile.isConfigurationSection("ranks"))
+		{			
+			rankList = new ArrayList<>(configsFile.getConfigurationSection("ranks").getKeys(false));
+		}
+		else
+		{
+			for(String line : ColorUtils.color(messagesFile.getStringList("errors.no-ranks-available")))
+			{
+				player.sendMessage(prefix + line);
+			}
+			return;
+		}
 		int ranksCount = rankList.size();
 		
 		// Stop the GUI opening if the ranks are not setup yet
 		if(ranksCount == 0)
 		{
-			for(String line : Color.color(messagesFile.getStringList("errors.no-ranks-available")))
+			for(String line : ColorUtils.color(messagesFile.getStringList("errors.no-ranks-available")))
 			{
 				player.sendMessage(prefix + line);
 			}
@@ -133,7 +145,7 @@ public class ConditionalGUIGUIHandler implements Listener
 		// Border Item
 		ItemStack border = null;
 		try {			
-			border = ItemBuilder.build(Material.valueOf(configsFile.getString("gui.borders.icon").toUpperCase()), Color.color(configsFile.getString("gui.borders.name")));
+			border = ItemBuilder.build(Material.valueOf(configsFile.getString("gui.borders.icon").toUpperCase()), ColorUtils.color(configsFile.getString("gui.borders.name")));
 		}
 		catch(IllegalArgumentException ex) {
 			for(String line : messagesFile.getStringList("errors.invalid-icon"))
@@ -143,7 +155,7 @@ public class ConditionalGUIGUIHandler implements Listener
 			return;
 		}
 		
-		Inventory inv = Bukkit.createInventory(player, (int) (rows * 9), Color.color(configsFile.getString("gui.title")));
+		Inventory inv = Bukkit.createInventory(player, (int) (rows * 9), ColorUtils.color(configsFile.getString("gui.title")));
 		Boolean addInner = true;
 		for(int x = 0, y = 0, z = 0; x < rows * 9; x++)
 		{
@@ -170,18 +182,18 @@ public class ConditionalGUIGUIHandler implements Listener
 						String upgradable;
 						if(!ownedRanks.contains(rankList.get(z)) || ownedRanks.contains(rankList.get(z)) && configsFile.getBoolean("ranks." + rankList.get(z) + ".recaimable"))
 						{
-							upgradable = conditionChecker.isPassed(player, rankList.get(z)) ? Color.color(messagesFile.getString("upgradable")) : Color.color(messagesFile.getString("not-upgradable"));
+							upgradable = conditionChecker.isPassed(player, rankList.get(z)) ? ColorUtils.color(messagesFile.getString("upgradable")) : ColorUtils.color(messagesFile.getString("not-upgradable"));
 						}
 						else
 						{
-							upgradable = Color.color(messagesFile.getString("already-owned"));
+							upgradable = ColorUtils.color(messagesFile.getString("already-owned"));
 						}
-						for(String loreLine : Color.color(configsFile.getStringList("ranks." + rankList.get(z) + ".lore"))) {
-							loreLine = loreLine.replace("{upgradable}", upgradable).replace("{rank}", Color.color(configsFile.getString("ranks." + rankList.get(z) + ".name")));
+						for(String loreLine : ColorUtils.color(configsFile.getStringList("ranks." + rankList.get(z) + ".lore"))) {
+							loreLine = loreLine.replace("{upgradable}", upgradable).replace("{rank}", ColorUtils.color(configsFile.getString("ranks." + rankList.get(z) + ".name")));
 							lore.add(loreLine);
 						}
 						ItemStack rankItem = ItemBuilder.build(Material.valueOf(configsFile.getString("ranks." + rankList.get(z) + ".icon").toUpperCase()),
-								Color.color(rankList.get(z)),
+								ColorUtils.color(configsFile.getString("ranks." + rankList.get(z) + ".display-color") + rankList.get(z)),
 								lore);
 						inv.setItem(x, rankItem);
 					}

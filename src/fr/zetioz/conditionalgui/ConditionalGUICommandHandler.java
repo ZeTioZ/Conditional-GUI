@@ -10,7 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import fr.zetioz.conditionalgui.utils.Color;
+import fr.zetioz.conditionalgui.utils.ColorUtils;
 
 public class ConditionalGUICommandHandler implements CommandExecutor
 {
@@ -22,7 +22,7 @@ public class ConditionalGUICommandHandler implements CommandExecutor
 		try
 		{
 			this.messagesFile = ConditionalGUIMain.getFilesManager().getSimpleYaml("messages");
-			this.prefix = Color.color(messagesFile.getString("prefix"));
+			this.prefix = ColorUtils.color(messagesFile.getString("prefix"));
 		}
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -41,7 +41,7 @@ public class ConditionalGUICommandHandler implements CommandExecutor
 				}
 				else
 				{
-					for(String line : Color.color(messagesFile.getStringList("errors.must-be-a-player")))
+					for(String line : ColorUtils.color(messagesFile.getStringList("errors.must-be-a-player")))
 					{
 						sender.sendMessage(prefix + line);
 					}
@@ -55,7 +55,7 @@ public class ConditionalGUICommandHandler implements CommandExecutor
 				}
 				else if(args[0].equalsIgnoreCase("reload") && sender.hasPermission("conditionalgui.reload"))
 				{
-					for(String line : Color.color(messagesFile.getStringList("reload-command")))
+					for(String line : ColorUtils.color(messagesFile.getStringList("reload-command")))
 					{
 						sender.sendMessage(prefix + line);
 					}
@@ -71,7 +71,7 @@ public class ConditionalGUICommandHandler implements CommandExecutor
 					}
 					else
 					{
-						for(String line : Color.color(messagesFile.getStringList("errors.must-be-a-player")))
+						for(String line : ColorUtils.color(messagesFile.getStringList("errors.must-be-a-player")))
 						{
 							sender.sendMessage(prefix + line);
 						}
@@ -84,7 +84,7 @@ public class ConditionalGUICommandHandler implements CommandExecutor
 	
 	public void sendHelpPage(CommandSender sender)
 	{
-		for(String line : Color.color(messagesFile.getStringList("help-command")))
+		for(String line : ColorUtils.color(messagesFile.getStringList("help-command")))
 		{
 			sender.sendMessage(prefix + line);
 		}
