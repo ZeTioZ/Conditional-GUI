@@ -13,7 +13,8 @@ ranks:
       - "Rank: {rank}"
       - "Conditions to upgrade:"
       - "    - 1000$"
-      - "    - 5 Mined blocks"
+      - "    - 5 Mined blocks in total"
+      - "    - 15 Mined Diamond Ores"
       - "    - 500XP"
       - " "
       - "Upgradable: {upgradable}"
@@ -23,7 +24,12 @@ ranks:
     recaimable: true # It define if whether or not the upgrade is reclaimable
     conditions: # Conditions to upgrade (Refer to the plugin's page to know which conditions are available)
       money: 1000
-      mined_blocks: 5
+      mined_total: 5
+      # To add a block to watch on the block list, just add a new line with the following syntax: - "MATERIAL:AMOUNT"
+      # Materials can be found at the following link https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+      mined_blocks:
+        blocks_list:
+          - "DIAMOND_ORE:15"
       xp: 500
     commands: # Commands that are sent as console once the player get the upgrade. If you don't want any command, delete and place [] instead.
       - "eco take {player} 1000"

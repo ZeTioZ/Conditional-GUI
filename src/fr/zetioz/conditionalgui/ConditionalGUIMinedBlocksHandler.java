@@ -26,6 +26,7 @@ public class ConditionalGUIMinedBlocksHandler implements Listener
 	@EventHandler
 	public void onPlayerMineBlock(BlockBreakEvent e)
 	{
-		database.set("players." + e.getPlayer().getName() + ".mined_blocks", database.getInt("players." + e.getPlayer().getName() + ".mined_blocks") + 1);
+		database.set("players." + e.getPlayer().getName() + ".mined_total", database.getInt("players." + e.getPlayer().getName() + ".mined_total") + 1);
+		database.set("players." + e.getPlayer().getName() + ".mined_" + e.getBlock().getType().toString().toLowerCase(), database.getInt("players." + e.getPlayer().getName() + ".mined_" + e.getBlock().getType().toString().toLowerCase()) + 1);
 	}
 }

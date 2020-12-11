@@ -1,10 +1,13 @@
 package fr.zetioz.conditionalgui;
 
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import fr.zetioz.conditionalgui.utils.EnabledDependenciesUtils;
 import fr.zetioz.conditionalgui.utils.FilesManager;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -15,7 +18,8 @@ public class ConditionalGUIMain extends JavaPlugin
 	private static FilesManager filesManager;
 	private static Economy econ = null;
     private static Permission perms = null;
-	
+	private static List<String> enabledDependecies;
+    
 	@Override
 	public void onEnable()
 	{
@@ -33,7 +37,12 @@ public class ConditionalGUIMain extends JavaPlugin
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-        setupPermissions();
+        else
+        {        	
+        	setupPermissions();
+        }
+        
+        enabledDependecies = EnabledDependenciesUtils.getEnabledDependencies();
 	}
 	
 	@Override
@@ -79,6 +88,10 @@ public class ConditionalGUIMain extends JavaPlugin
     
     public static Permission getPermissions() {
         return perms;
+    }
+    
+    public static List<String> getEnabledDependencies() {
+    	return enabledDependecies;
     }
 	
 	private void registerEvents(ConditionalGUIMain plugin, Listener... listeners)
