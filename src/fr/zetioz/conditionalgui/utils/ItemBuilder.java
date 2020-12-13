@@ -37,4 +37,30 @@ public final class ItemBuilder {
 		itemToBuild.setItemMeta(iMeta);
 		return itemToBuild;
 	}
+	
+	/**
+	 * @param itemStack : Item stack to modify the item stack from
+	 * @param itemName : The display name of the item stack
+	 * @param itemLore : The lore of the item stack
+	*/
+	public static final ItemStack build(ItemStack itemStack, String itemName, List<String> itemLore)
+	{
+		ItemMeta iMeta = itemStack.getItemMeta();
+		iMeta.setDisplayName(itemName);
+		iMeta.setLore(itemLore);
+		itemStack.setItemMeta(iMeta);
+		return itemStack;
+	}
+	
+	/**
+	 * @param itemStack : Item stack to modify the item stack from
+	 * @param itemName : The display name of the item stack
+	*/
+	public static final ItemStack build(ItemStack itemStack, String itemName)
+	{
+		ItemMeta iMeta = itemStack.getItemMeta();
+		iMeta.setDisplayName(itemName);
+		itemStack.setItemMeta(iMeta);
+		return itemStack;
+	}
 }

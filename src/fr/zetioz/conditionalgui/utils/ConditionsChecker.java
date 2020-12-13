@@ -82,33 +82,33 @@ public final class ConditionsChecker {
 							{
 								String[] decodedCondition = blockDecoder.split(":");
 								try
-								{								
-									if(Material.valueOf(decodedCondition[0]) != null)
-									{
-										if(Material.valueOf(decodedCondition[0]).isBlock())
-										{											
-											if(database.getInt("players." + p.getPlayer().getName() + ".mined_" + decodedCondition[0].toLowerCase()) < Integer.valueOf(decodedCondition[1]))
-											{
-												conditionChecked = false;
-												break;
-											}
-										}
-										else
+								{
+									Material decodedMat = Material.valueOf(decodedCondition[0]);
+									if(decodedMat.isBlock())
+									{											
+										if(database.getInt("players." + p.getPlayer().getName() + ".mined_" + decodedCondition[0].toLowerCase()) < Integer.valueOf(decodedCondition[1]))
 										{
-											ConditionalGUIMain.getPlugin().getLogger().severe("You seem using a mined block condition on a block that's not an actual breakable block! Please change that in the config file.");
-											ConditionalGUIMain.getPlugin().getLogger().severe("Block ignored. Wrong material in config file: " + decodedCondition[0]);
+											conditionChecked = false;
+											break;
 										}
 									}
 									else
 									{
-										ConditionalGUIMain.getPlugin().getLogger().severe("You seem using a mined block condition on a block that's not an actual material type! Please change that in the config file.");
-										ConditionalGUIMain.getPlugin().getLogger().severe("Material ignored. Wrong material in config file: " + decodedCondition[0]);
+										ConditionalGUIMain.getPlugin().getLogger().severe("You seem using a mined block condition on a block that's not an actual breakable block! Please change that in the config file.");
+										ConditionalGUIMain.getPlugin().getLogger().severe("Block ignored. Wrong material in config file: " + decodedCondition[0]);
 									}
 								}
 								catch(NumberFormatException ex)
 								{
 									ConditionalGUIMain.getPlugin().getLogger().severe("You seem using a wrong integer input into a mined block condition! Please change that in the config file.");
 									ConditionalGUIMain.getPlugin().getLogger().severe("Block ignored. Wrong integer in config file: " + blockDecoder);
+									ex.printStackTrace();
+								}
+								catch(IllegalArgumentException ex)
+								{
+									ConditionalGUIMain.getPlugin().getLogger().severe("You seem using a mined block condition on a block that's not an actual material type! Please change that in the config file.");
+									ConditionalGUIMain.getPlugin().getLogger().severe("Material ignored. Wrong material in config file: " + decodedCondition[0]);
+									ex.printStackTrace();
 								}
 							}
 							if(conditionChecked)

@@ -2,6 +2,7 @@ package fr.zetioz.conditionalgui;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Set;
 
@@ -18,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import fr.zetioz.conditionalgui.utils.ColorUtils;
 import fr.zetioz.conditionalgui.utils.ConditionsChecker;
 import fr.zetioz.conditionalgui.utils.ItemBuilder;
+import fr.zetioz.conditionalgui.utils.PlayerHeadUtils;
 
 public class ConditionalGUIGUIHandler implements Listener
 {
@@ -113,6 +115,7 @@ public class ConditionalGUIGUIHandler implements Listener
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void openGUI(Player player)
 	{
 		List<String> rankList;
@@ -180,7 +183,7 @@ public class ConditionalGUIGUIHandler implements Listener
 						List<String> lore = new ArrayList<>();
 						List<String> ownedRanks = database.getStringList("players." + player.getName() + ".owned-ranks");
 						String upgradable;
-						if(!ownedRanks.contains(rankList.get(z)) || ownedRanks.contains(rankList.get(z)) && configsFile.getBoolean("ranks." + rankList.get(z) + ".recaimable"))
+						if(!ownedRanks.contains(rankList.get(z)) || configsFile.getBoolean("ranks." + rankList.get(z) + ".recaimable"))
 						{
 							upgradable = conditionChecker.isPassed(player, rankList.get(z)) ? ColorUtils.color(messagesFile.getString("upgradable")) : ColorUtils.color(messagesFile.getString("not-upgradable"));
 						}
@@ -192,9 +195,29 @@ public class ConditionalGUIGUIHandler implements Listener
 							loreLine = loreLine.replace("{upgradable}", upgradable).replace("{rank}", ColorUtils.color(configsFile.getString("ranks." + rankList.get(z) + ".name")));
 							lore.add(loreLine);
 						}
-						ItemStack rankItem = ItemBuilder.build(Material.valueOf(configsFile.getString("ranks." + rankList.get(z) + ".icon").toUpperCase()),
-								ColorUtils.color(configsFile.getString("ranks." + rankList.get(z) + ".display-color") + rankList.get(z)),
-								lore);
+						Material iconMaterial = Material.valueOf(configsFile.getString("ranks." + rankList.get(z) + ".icon").toUpperCase());
+						ItemStack rankItem = null;
+						if(iconMaterial == Material.PLAYER_HEAD)
+						{
+							ItemStack iconHead = null;
+							if(new String(Base64.getDecoder().decode(configsFile.getString("ranks." + rankList.get(z) + ".head-texture").getBytes())).contains("http://textures.minecraft.net/texture/"))
+							{
+								iconHead = PlayerHeadUtils.getPlayerHead(configsFile.getString("ranks." + rankList.get(z) + ".head-texture"));
+							}
+							else
+							{								
+								iconHead = PlayerHeadUtils.getPlayerHead(Bukkit.getOfflinePlayer(configsFile.getString("ranks." + rankList.get(z) + ".head-texture")));
+							}
+							rankItem = ItemBuilder.build(iconHead,
+									ColorUtils.color(configsFile.getString("ranks." + rankList.get(z) + ".display-name-color") + rankList.get(z)),
+									lore);
+						}
+						else
+						{							
+							rankItem = ItemBuilder.build(iconMaterial,
+									ColorUtils.color(configsFile.getString("ranks." + rankList.get(z) + ".display-name-color") + rankList.get(z)),
+									lore);
+						}
 						inv.setItem(x, rankItem);
 					}
 				}

@@ -6,8 +6,9 @@ gui:
 
 ranks:
   rank1: # This will server as the display name in the GUI
-    display-color: "&2" # Change the display name color in the GUI
-    icon: DIAMOND_SWORD # Change the display icon in the GUI
+    display-name-color: "&2" # Change the display name color in the GUI
+    icon: PLAYER_HEAD # Change the display icon in the GUI. Please, add "head-texture" option to get a custom head.
+    head-texture: "ZeTioZ" # Head texture either in Base64 or directly the player's nickname. You can find the Base64 on https://minecraft-heads.com/custom-heads/ on the very bottom of the page copy the "Value" field.
     name: "The rank" # The name is NOT the display name in the GUI
     lore: # Change the lore of the displayed item in the GUI. If you don't want a lore, delete and place [] instead.
       - "Rank: {rank}"
