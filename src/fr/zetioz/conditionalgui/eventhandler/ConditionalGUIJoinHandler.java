@@ -1,4 +1,4 @@
-package fr.zetioz.conditionalgui;
+package fr.zetioz.conditionalgui.eventhandler;
 
 import java.io.FileNotFoundException;
 
@@ -7,9 +7,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import fr.zetioz.conditionalgui.ConditionalGUIMain;
+
 public class ConditionalGUIJoinHandler implements Listener
 {
-	public YamlConfiguration database;
+	private YamlConfiguration database;
 	
 	public ConditionalGUIJoinHandler()
 	{

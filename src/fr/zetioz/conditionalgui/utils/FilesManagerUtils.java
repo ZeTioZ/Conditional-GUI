@@ -12,12 +12,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import fr.zetioz.conditionalgui.ConditionalGUIMain;
 
-public class FilesManager
+public class FilesManagerUtils
 {
 	private static ConditionalGUIMain plugin = ConditionalGUIMain.getPlugin();
 	private Map<String, YamlConfiguration> simpleYaml;
 	
-	public FilesManager()
+	public FilesManagerUtils()
 	{
 		simpleYaml = new HashMap<>();
 	}

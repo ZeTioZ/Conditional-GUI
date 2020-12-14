@@ -1,4 +1,4 @@
-package fr.zetioz.conditionalgui;
+package fr.zetioz.conditionalgui.eventhandler;
 
 import java.io.FileNotFoundException;
 
@@ -6,6 +6,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+
+import fr.zetioz.conditionalgui.ConditionalGUIMain;
 
 public class ConditionalGUIDeathHandler implements Listener
 {

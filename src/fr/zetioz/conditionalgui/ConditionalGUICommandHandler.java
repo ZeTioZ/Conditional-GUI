@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import fr.zetioz.conditionalgui.eventhandler.ConditionalGUIGUIHandler;
 import fr.zetioz.conditionalgui.utils.ColorUtils;
 
 public class ConditionalGUICommandHandler implements CommandExecutor

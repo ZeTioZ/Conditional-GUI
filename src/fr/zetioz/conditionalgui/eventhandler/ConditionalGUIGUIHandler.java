@@ -1,4 +1,4 @@
-package fr.zetioz.conditionalgui;
+package fr.zetioz.conditionalgui.eventhandler;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -16,9 +16,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import fr.zetioz.conditionalgui.ConditionalGUIMain;
 import fr.zetioz.conditionalgui.utils.ColorUtils;
-import fr.zetioz.conditionalgui.utils.ConditionsChecker;
-import fr.zetioz.conditionalgui.utils.ItemBuilder;
+import fr.zetioz.conditionalgui.utils.ConditionsCheckerUtils;
+import fr.zetioz.conditionalgui.utils.ItemBuilderUtils;
 import fr.zetioz.conditionalgui.utils.PlayerHeadUtils;
 
 public class ConditionalGUIGUIHandler implements Listener
@@ -27,7 +28,7 @@ public class ConditionalGUIGUIHandler implements Listener
 	private YamlConfiguration messagesFile;
 	private YamlConfiguration configsFile;
 	private YamlConfiguration database;
-	private ConditionsChecker conditionChecker;
+	private ConditionsCheckerUtils conditionChecker;
 	private String prefix;
 	
 	public ConditionalGUIGUIHandler()
@@ -38,7 +39,7 @@ public class ConditionalGUIGUIHandler implements Listener
 			configsFile = ConditionalGUIMain.getFilesManager().getSimpleYaml("configs");
 			database = ConditionalGUIMain.getFilesManager().getSimpleYaml("database");
 			prefix = ColorUtils.color(messagesFile.getString("prefix"));
-			conditionChecker = new ConditionsChecker(configsFile, ConditionalGUIMain.getFilesManager().getSimpleYaml("database"));
+			conditionChecker = new ConditionsCheckerUtils(configsFile, ConditionalGUIMain.getFilesManager().getSimpleYaml("database"));
 		}
 		catch (FileNotFoundException e)
 		{
@@ -56,7 +57,7 @@ public class ConditionalGUIGUIHandler implements Listener
 			Player p = (Player) e.getWhoClicked();
 			ItemStack border = null;
 			try {			
-				border = ItemBuilder.build(Material.valueOf(configsFile.getString("gui.borders.icon").toUpperCase()), ColorUtils.color(configsFile.getString("gui.borders.name")));
+				border = ItemBuilderUtils.build(Material.valueOf(configsFile.getString("gui.borders.icon").toUpperCase()), ColorUtils.color(configsFile.getString("gui.borders.name")));
 			}
 			catch(IllegalArgumentException ex) {
 				for(String line : messagesFile.getStringList("errors.invalid-icon"))
@@ -148,7 +149,7 @@ public class ConditionalGUIGUIHandler implements Listener
 		// Border Item
 		ItemStack border = null;
 		try {			
-			border = ItemBuilder.build(Material.valueOf(configsFile.getString("gui.borders.icon").toUpperCase()), ColorUtils.color(configsFile.getString("gui.borders.name")));
+			border = ItemBuilderUtils.build(Material.valueOf(configsFile.getString("gui.borders.icon").toUpperCase()), ColorUtils.color(configsFile.getString("gui.borders.name")));
 		}
 		catch(IllegalArgumentException ex) {
 			for(String line : messagesFile.getStringList("errors.invalid-icon"))
@@ -208,13 +209,13 @@ public class ConditionalGUIGUIHandler implements Listener
 							{								
 								iconHead = PlayerHeadUtils.getPlayerHead(Bukkit.getOfflinePlayer(configsFile.getString("ranks." + rankList.get(z) + ".head-texture")));
 							}
-							rankItem = ItemBuilder.build(iconHead,
+							rankItem = ItemBuilderUtils.build(iconHead,
 									ColorUtils.color(configsFile.getString("ranks." + rankList.get(z) + ".display-name-color") + rankList.get(z)),
 									lore);
 						}
 						else
 						{							
-							rankItem = ItemBuilder.build(iconMaterial,
+							rankItem = ItemBuilderUtils.build(iconMaterial,
 									ColorUtils.color(configsFile.getString("ranks." + rankList.get(z) + ".display-name-color") + rankList.get(z)),
 									lore);
 						}

@@ -6,9 +6,9 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public final class ItemBuilder {
+public final class ItemBuilderUtils {
 	
-	private ItemBuilder(){}
+	private ItemBuilderUtils(){}
 	
 	/**
 	 * @param itemMaterial : Material to build the item stack from

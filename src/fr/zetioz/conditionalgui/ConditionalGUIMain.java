@@ -7,15 +7,19 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import fr.zetioz.conditionalgui.eventhandler.ConditionalGUIDeathHandler;
+import fr.zetioz.conditionalgui.eventhandler.ConditionalGUIGUIHandler;
+import fr.zetioz.conditionalgui.eventhandler.ConditionalGUIJoinHandler;
+import fr.zetioz.conditionalgui.eventhandler.ConditionalGUIMinedBlocksHandler;
 import fr.zetioz.conditionalgui.utils.EnabledDependenciesUtils;
-import fr.zetioz.conditionalgui.utils.FilesManager;
+import fr.zetioz.conditionalgui.utils.FilesManagerUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
 public class ConditionalGUIMain extends JavaPlugin
 {	
 	private static ConditionalGUIMain plugin;
-	private static FilesManager filesManager;
+	private static FilesManagerUtils filesManager;
 	private static Economy econ = null;
     private static Permission perms = null;
 	private static List<String> enabledDependecies;
@@ -24,7 +28,7 @@ public class ConditionalGUIMain extends JavaPlugin
 	public void onEnable()
 	{
 		plugin = this;
-		filesManager = new FilesManager();
+		filesManager = new FilesManagerUtils();
 		filesManager.createSimpleYaml("configs");
 		filesManager.createSimpleYaml("messages");
 		filesManager.createSimpleYaml("database");
@@ -77,7 +81,7 @@ public class ConditionalGUIMain extends JavaPlugin
 		return plugin;
 	}
 	
-	public static FilesManager getFilesManager()
+	public static FilesManagerUtils getFilesManager()
 	{
 		return filesManager;
 	}

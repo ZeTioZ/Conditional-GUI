@@ -13,14 +13,14 @@ import fr.zetioz.conditionalgui.enums.Conditions;
 import fr.zetioz.conditionalgui.hooks.McMMOHook;
 import fr.zetioz.conditionalgui.hooks.SuperiorSkyblockHook;
 
-public final class ConditionsChecker {
+public final class ConditionsCheckerUtils {
 
 	private YamlConfiguration configsFile;
 	private YamlConfiguration database;
 	
 	/* Injecting the Yaml Configuration throught the constructor 
 	 * to be sure to use the same instance of configuration as the GUI */
-	public ConditionsChecker(YamlConfiguration configsFile, YamlConfiguration database)
+	public ConditionsCheckerUtils(YamlConfiguration configsFile, YamlConfiguration database)
 	{
 		this.configsFile = configsFile;
 		this.database = database;
@@ -36,7 +36,11 @@ public final class ConditionsChecker {
 			int conditionsToRespect = 0;
 			for(String condition : conditionsListUpper)
 			{
-				if(Conditions.valueOf(condition) != null && Conditions.valueOf(condition) != Conditions.NOT_A_CONDITION && Conditions.valueOf(condition) != Conditions.NO_CONDITION)
+				String[] conditionSplit = null;
+				conditionSplit = AdvancedCheckUtils.mathDecoder(condition);
+				condition = conditionSplit != null ? conditionSplit[1] : condition;
+				
+				if(EnumCheckUtils.isValidEnum(Conditions.class, condition) && Conditions.valueOf(condition) != Conditions.NOT_A_CONDITION && Conditions.valueOf(condition) != Conditions.NO_CONDITION)
 				{
 					conditionsToRespect++;
 				}
@@ -45,30 +49,43 @@ public final class ConditionsChecker {
 			int conditionsRepected = 0;
 			for(String condition : conditionsListUpper)
 			{
-				Conditions conditionToCheck = Conditions.valueOf(condition) != null ? Conditions.valueOf(condition) : Conditions.NOT_A_CONDITION;
+				String[] conditionSplit = null;
+				String mathCondition = null;
+				conditionSplit = AdvancedCheckUtils.mathDecoder(condition);
+				mathCondition = conditionSplit != null ? conditionSplit[0] : null;
+				condition = conditionSplit != null ? conditionSplit[1] : condition;
+				
+				Conditions conditionToCheck = EnumCheckUtils.isValidEnum(Conditions.class, condition) ? Conditions.valueOf(condition) : Conditions.NOT_A_CONDITION;
 				switch(conditionToCheck)
 				{
 					case KILL:
-						System.out.println("KILL: " + conditionsListRaw.get(i));
-						if(database.getInt("players." + p.getName() + ".kills") >= configsFile.getInt("ranks." + rankName + ".conditions." + conditionsListRaw.get(i)))
+						int pKills = database.getInt("players." + p.getName() + ".kills"); // Player kills
+						int cKills = configsFile.getInt("ranks." + rankName + ".conditions." + conditionsListRaw.get(i)); // Configuration kills
+						if(AdvancedCheckUtils.checkMath(mathCondition, pKills, cKills))
 						{
 							conditionsRepected++;
 						}
 						break;
 					case MONEY:
-						if(ConditionalGUIMain.getEconomy().getBalance(p) >= configsFile.getDouble("ranks." + rankName + ".conditions." + conditionsListRaw.get(i)))
+						double pBalance = ConditionalGUIMain.getEconomy().getBalance(p);
+						double cBalance = configsFile.getDouble("ranks." + rankName + ".conditions." + conditionsListRaw.get(i));
+						if(AdvancedCheckUtils.checkMath(mathCondition, pBalance, cBalance))
 						{
 							conditionsRepected++;
 						}
 						break;
 					case XP:
-						if(p.getTotalExperience() >= configsFile.getDouble("ranks." + rankName + ".conditions." + conditionsListRaw.get(i)))
+						double pEXP = p.getTotalExperience();
+						double cEXP = configsFile.getDouble("ranks." + rankName + ".conditions." + conditionsListRaw.get(i));
+						if(AdvancedCheckUtils.checkMath(mathCondition, pEXP, cEXP))
 						{
 							conditionsRepected++;
 						}
 						break;
 					case MINED_TOTAL:
-						if(database.getInt("players." + p.getName() + ".mined_total") >= configsFile.getInt("ranks." + rankName + ".conditions." + conditionsListRaw.get(i)))
+						int pTotalMined = database.getInt("players." + p.getName() + ".mined_total");
+						int cTotalMined = configsFile.getInt("ranks." + rankName + ".conditions." + conditionsListRaw.get(i));
+						if(AdvancedCheckUtils.checkMath(mathCondition, pTotalMined, cTotalMined))
 						{
 							conditionsRepected++;
 						}
@@ -78,6 +95,8 @@ public final class ConditionsChecker {
 							&& !configsFile.getStringList("ranks." + rankName + ".conditions." + conditionsListRaw.get(i) + ".blocks_list").isEmpty())
 						{
 							boolean conditionChecked = true;
+							int pBlockMined = 0;
+							int cBlockMined = 0;
 							for(String blockDecoder : configsFile.getStringList("ranks." + rankName + ".conditions." + conditionsListRaw.get(i) + ".blocks_list"))
 							{
 								String[] decodedCondition = blockDecoder.split(":");
@@ -85,8 +104,10 @@ public final class ConditionsChecker {
 								{
 									Material decodedMat = Material.valueOf(decodedCondition[0]);
 									if(decodedMat.isBlock())
-									{											
-										if(database.getInt("players." + p.getPlayer().getName() + ".mined_" + decodedCondition[0].toLowerCase()) < Integer.valueOf(decodedCondition[1]))
+									{
+										pBlockMined = database.getInt("players." + p.getPlayer().getName() + ".mined_" + decodedCondition[0].toLowerCase());
+										cBlockMined = Integer.valueOf(decodedCondition[1]);
+										if(!AdvancedCheckUtils.checkMath(mathCondition, pBlockMined, cBlockMined))
 										{
 											conditionChecked = false;
 											break;
@@ -130,11 +151,16 @@ public final class ConditionsChecker {
 						}
 						break;
 					case MCMMO_LEVEL:
-						if(ConditionalGUIMain.getEnabledDependencies().contains("mcMMO") && McMMOHook.getPlayerMcMMOLevel(p) >= configsFile.getInt("ranks." + rankName + ".conditions." + conditionsListRaw.get(i)))
+						if(ConditionalGUIMain.getEnabledDependencies().contains("mcMMO"))
 						{
-							conditionsRepected++;
+							int pMcMMOLevel = McMMOHook.getPlayerMcMMOLevel(p);
+							int cMcMMOLevel = configsFile.getInt("ranks." + rankName + ".conditions." + conditionsListRaw.get(i));
+							if(AdvancedCheckUtils.checkMath(mathCondition, pMcMMOLevel, cMcMMOLevel))
+							{								
+								conditionsRepected++;
+							}
 						}
-						else if(!ConditionalGUIMain.getEnabledDependencies().contains("mcMMO"))
+						else
 						{
 							ConditionalGUIMain.getPlugin().getLogger().warning("You are using a McMMO condition whitout having McMMO enabled on your server!");
 							ConditionalGUIMain.getPlugin().getLogger().warning("The condition will be ignored!");
@@ -145,8 +171,9 @@ public final class ConditionsChecker {
 						if(ConditionalGUIMain.getEnabledDependencies().contains("SuperiorSkyblock"))
 						{
 							BigDecimal islandLevel = SuperiorSkyblockHook.getIslandLevel(p);
-							if(islandLevel.compareTo(new BigDecimal(configsFile.getInt("ranks." + rankName + ".conditions." + conditionsListRaw.get(i)))) >= 0)
-							{
+							BigDecimal configIslandLevel = new BigDecimal(configsFile.getInt("ranks." + rankName + ".conditions." + conditionsListRaw.get(i)));
+							if(AdvancedCheckUtils.checkMath(mathCondition, islandLevel, configIslandLevel))
+							{								
 								conditionsRepected++;
 							}
 						}
@@ -177,8 +204,9 @@ public final class ConditionsChecker {
 						if(ConditionalGUIMain.getEnabledDependencies().contains("SuperiorSkyblock"))
 						{
 							int iSize = SuperiorSkyblockHook.getIslandSize(p);
-							if(iSize >= configsFile.getInt("ranks." + rankName + ".conditions." + conditionsListRaw.get(i)))
-							{
+							int cSize = configsFile.getInt("ranks." + rankName + ".conditions." + conditionsListRaw.get(i));
+							if(AdvancedCheckUtils.checkMath(mathCondition, iSize, cSize))
+							{								
 								conditionsRepected++;
 							}
 						}
@@ -190,6 +218,8 @@ public final class ConditionsChecker {
 						}
 						break;
 					default:
+						ConditionalGUIMain.getPlugin().getLogger().warning("You are using an invalid condition: " + condition + "! Please, remove it from configuration file.");
+						ConditionalGUIMain.getPlugin().getLogger().warning("The condition will be ignored!");
 				}
 				i++;
 			}
