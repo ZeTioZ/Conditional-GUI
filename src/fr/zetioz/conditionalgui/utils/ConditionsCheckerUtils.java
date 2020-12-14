@@ -150,6 +150,11 @@ public final class ConditionsCheckerUtils {
 							conditionsRepected++;
 						}
 						break;
+					case PERMISSION_NEEDED:
+						if(p.hasPermission(configsFile.getString("ranks." + rankName + ".conditions." + conditionsListRaw.get(i))))
+						{
+							conditionsRepected++;
+						}
 					case MCMMO_LEVEL:
 						if(ConditionalGUIMain.getEnabledDependencies().contains("mcMMO"))
 						{
