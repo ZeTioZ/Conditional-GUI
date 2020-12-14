@@ -151,7 +151,16 @@ public final class ConditionsCheckerUtils {
 						}
 						break;
 					case PERMISSION_NEEDED:
-						if(p.hasPermission(configsFile.getString("ranks." + rankName + ".conditions." + conditionsListRaw.get(i))))
+						boolean permissionPassed = true;
+						for(String permission : configsFile.getStringList("ranks." + rankName + ".conditions." + conditionsListRaw.get(i)))
+						{							
+							if(!p.hasPermission(permission))
+							{
+								permissionPassed = false;
+								break;
+							}
+						}
+						if(permissionPassed)
 						{
 							conditionsRepected++;
 						}

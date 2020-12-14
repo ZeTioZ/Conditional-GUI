@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>fr.zetioz</groupId>
   <artifactId>Conditional-GUI</artifactId>
-  <version>0.4.1</version>
+  <version>0.4.2</version>
   <name>Conditional-GUI</name>
   
   <repositories>
