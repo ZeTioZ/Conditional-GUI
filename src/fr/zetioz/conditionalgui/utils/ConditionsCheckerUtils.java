@@ -26,11 +26,11 @@ public final class ConditionsCheckerUtils {
 		this.database = database;
 	}
 	
-	public boolean isPassed(Player p, String rankName)
+	public boolean isPassed(Player p, String GUIName, String rankName)
 	{
-		if(configsFile.isConfigurationSection("ranks." + rankName) && configsFile.isConfigurationSection("ranks." + rankName + ".conditions"))
+		if(configsFile.isConfigurationSection(GUIName + ".ranks." + rankName) && configsFile.isConfigurationSection(GUIName + ".ranks." + rankName + ".conditions"))
 		{
-			List<String> conditionsListRaw = new ArrayList<>(configsFile.getConfigurationSection("ranks." + rankName + ".conditions").getKeys(false));
+			List<String> conditionsListRaw = new ArrayList<>(configsFile.getConfigurationSection(GUIName + ".ranks." + rankName + ".conditions").getKeys(false));
 			List<String> conditionsListUpper = new ArrayList<>(conditionsListRaw);
 			conditionsListUpper.replaceAll(String::toUpperCase);
 			int conditionsToRespect = 0;
@@ -60,7 +60,7 @@ public final class ConditionsCheckerUtils {
 				{
 					case KILL:
 						int pKills = database.getInt("players." + p.getName() + ".kills"); // Player kills
-						int cKills = configsFile.getInt("ranks." + rankName + ".conditions." + conditionsListRaw.get(i)); // Configuration kills
+						int cKills = configsFile.getInt(GUIName + ".ranks." + rankName + ".conditions." + conditionsListRaw.get(i)); // Configuration kills
 						if(AdvancedCheckUtils.checkMath(mathCondition, pKills, cKills))
 						{
 							conditionsRepected++;
@@ -68,7 +68,7 @@ public final class ConditionsCheckerUtils {
 						break;
 					case MONEY:
 						double pBalance = ConditionalGUIMain.getEconomy().getBalance(p);
-						double cBalance = configsFile.getDouble("ranks." + rankName + ".conditions." + conditionsListRaw.get(i));
+						double cBalance = configsFile.getDouble(GUIName + ".ranks." + rankName + ".conditions." + conditionsListRaw.get(i));
 						if(AdvancedCheckUtils.checkMath(mathCondition, pBalance, cBalance))
 						{
 							conditionsRepected++;
@@ -76,7 +76,7 @@ public final class ConditionsCheckerUtils {
 						break;
 					case XP:
 						double pEXP = p.getTotalExperience();
-						double cEXP = configsFile.getDouble("ranks." + rankName + ".conditions." + conditionsListRaw.get(i));
+						double cEXP = configsFile.getDouble(GUIName + ".ranks." + rankName + ".conditions." + conditionsListRaw.get(i));
 						if(AdvancedCheckUtils.checkMath(mathCondition, pEXP, cEXP))
 						{
 							conditionsRepected++;
@@ -84,20 +84,20 @@ public final class ConditionsCheckerUtils {
 						break;
 					case MINED_TOTAL:
 						int pTotalMined = database.getInt("players." + p.getName() + ".mined_total");
-						int cTotalMined = configsFile.getInt("ranks." + rankName + ".conditions." + conditionsListRaw.get(i));
+						int cTotalMined = configsFile.getInt(GUIName + ".ranks." + rankName + ".conditions." + conditionsListRaw.get(i));
 						if(AdvancedCheckUtils.checkMath(mathCondition, pTotalMined, cTotalMined))
 						{
 							conditionsRepected++;
 						}
 						break;
 					case MINED_BLOCKS:
-						if(configsFile.contains("ranks." + rankName + ".conditions." + conditionsListRaw.get(i) + ".blocks_list")
-							&& !configsFile.getStringList("ranks." + rankName + ".conditions." + conditionsListRaw.get(i) + ".blocks_list").isEmpty())
+						if(configsFile.contains(GUIName + ".ranks." + rankName + ".conditions." + conditionsListRaw.get(i) + ".blocks_list")
+							&& !configsFile.getStringList(GUIName + ".ranks." + rankName + ".conditions." + conditionsListRaw.get(i) + ".blocks_list").isEmpty())
 						{
 							boolean conditionChecked = true;
 							int pBlockMined = 0;
 							int cBlockMined = 0;
-							for(String blockDecoder : configsFile.getStringList("ranks." + rankName + ".conditions." + conditionsListRaw.get(i) + ".blocks_list"))
+							for(String blockDecoder : configsFile.getStringList(GUIName + ".ranks." + rankName + ".conditions." + conditionsListRaw.get(i) + ".blocks_list"))
 							{
 								String[] decodedCondition = blockDecoder.split(":");
 								try
@@ -145,14 +145,14 @@ public final class ConditionsCheckerUtils {
 						}
 						break;
 					case RANK_NEEDED:
-						if(ConditionalGUIMain.getPermissions().playerInGroup(p, configsFile.getString("ranks." + rankName + ".conditions." + conditionsListRaw.get(i))))
+						if(ConditionalGUIMain.getPermissions().playerInGroup(p, configsFile.getString(GUIName + ".ranks." + rankName + ".conditions." + conditionsListRaw.get(i))))
 						{
 							conditionsRepected++;
 						}
 						break;
 					case PERMISSION_NEEDED:
 						boolean permissionPassed = true;
-						for(String permission : configsFile.getStringList("ranks." + rankName + ".conditions." + conditionsListRaw.get(i)))
+						for(String permission : configsFile.getStringList(GUIName + ".ranks." + rankName + ".conditions." + conditionsListRaw.get(i)))
 						{							
 							if(!p.hasPermission(permission))
 							{
@@ -168,7 +168,7 @@ public final class ConditionsCheckerUtils {
 						if(ConditionalGUIMain.getEnabledDependencies().contains("mcMMO"))
 						{
 							int pMcMMOLevel = McMMOHook.getPlayerMcMMOLevel(p);
-							int cMcMMOLevel = configsFile.getInt("ranks." + rankName + ".conditions." + conditionsListRaw.get(i));
+							int cMcMMOLevel = configsFile.getInt(GUIName + ".ranks." + rankName + ".conditions." + conditionsListRaw.get(i));
 							if(AdvancedCheckUtils.checkMath(mathCondition, pMcMMOLevel, cMcMMOLevel))
 							{								
 								conditionsRepected++;
@@ -185,7 +185,7 @@ public final class ConditionsCheckerUtils {
 						if(ConditionalGUIMain.getEnabledDependencies().contains("SuperiorSkyblock"))
 						{
 							BigDecimal islandLevel = SuperiorSkyblockHook.getIslandLevel(p);
-							BigDecimal configIslandLevel = new BigDecimal(configsFile.getInt("ranks." + rankName + ".conditions." + conditionsListRaw.get(i)));
+							BigDecimal configIslandLevel = new BigDecimal(configsFile.getInt(GUIName + ".ranks." + rankName + ".conditions." + conditionsListRaw.get(i)));
 							if(AdvancedCheckUtils.checkMath(mathCondition, islandLevel, configIslandLevel))
 							{								
 								conditionsRepected++;
@@ -202,7 +202,7 @@ public final class ConditionsCheckerUtils {
 						if(ConditionalGUIMain.getEnabledDependencies().contains("SuperiorSkyblock"))
 						{
 							String schematicName = SuperiorSkyblockHook.getIslandGenerator(p);
-							if(schematicName.equals(configsFile.getString("ranks." + rankName + ".conditions." + conditionsListRaw.get(i))))
+							if(schematicName.equals(configsFile.getString(GUIName + ".ranks." + rankName + ".conditions." + conditionsListRaw.get(i))))
 							{
 								conditionsRepected++;
 							}
@@ -218,7 +218,7 @@ public final class ConditionsCheckerUtils {
 						if(ConditionalGUIMain.getEnabledDependencies().contains("SuperiorSkyblock"))
 						{
 							int iSize = SuperiorSkyblockHook.getIslandSize(p);
-							int cSize = configsFile.getInt("ranks." + rankName + ".conditions." + conditionsListRaw.get(i));
+							int cSize = configsFile.getInt(GUIName + ".ranks." + rankName + ".conditions." + conditionsListRaw.get(i));
 							if(AdvancedCheckUtils.checkMath(mathCondition, iSize, cSize))
 							{								
 								conditionsRepected++;

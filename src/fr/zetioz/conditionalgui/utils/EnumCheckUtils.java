@@ -1,7 +1,5 @@
 package fr.zetioz.conditionalgui.utils;
 
-import fr.zetioz.conditionalgui.ConditionalGUIMain;
-
 public final class EnumCheckUtils {
 
 	private EnumCheckUtils() {}

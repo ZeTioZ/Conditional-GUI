@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>fr.zetioz</groupId>
   <artifactId>Conditional-GUI</artifactId>
-  <version>0.4.2</version>
+  <version>0.5.0</version>
   <name>Conditional-GUI</name>
   
   <repositories>
@@ -16,18 +16,13 @@
 		<id>jitpack.io</id>
 		<url>https://jitpack.io</url>
 	</repository>
-	
-	<repository>
-		<id>mcmmo-repo</id>
-		<url>https://minevolt.net/repo</url>
-	</repository>
   </repositories>
 
   <dependencies>
     <dependency>
            <groupId>org.spigotmc</groupId>
            <artifactId>spigot-api</artifactId>
-           <version>1.16.4-R0.1-SNAPSHOT</version>
+           <version>1.16.5-R0.1-SNAPSHOT</version>
            <scope>provided</scope>
     </dependency>
     

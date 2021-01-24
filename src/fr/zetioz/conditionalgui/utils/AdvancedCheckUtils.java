@@ -43,8 +43,8 @@ public final class AdvancedCheckUtils {
 	public static boolean checkMath(String mathCondition, BigDecimal playerValue, BigDecimal configValue)
 	{
 		return((mathCondition != null
-		    && (    (mathCondition.equals("UP_") && playerValue.compareTo(configValue) == 1)
-			     || (mathCondition.equals("DOWN_") && playerValue.compareTo(configValue) == -1)
+		    && (    (mathCondition.equals("UP_") && playerValue.compareTo(configValue) > 0)
+			     || (mathCondition.equals("DOWN_") && playerValue.compareTo(configValue) < -1)
 			     || (mathCondition.equals("EQUALS_") && playerValue.compareTo(configValue) == 0)
 		       )
 		    )

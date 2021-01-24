@@ -8,33 +8,27 @@ import org.bukkit.Bukkit;
 import fr.zetioz.conditionalgui.ConditionalGUIMain;
 
 public final class EnabledDependenciesUtils {
+	
 	private EnabledDependenciesUtils() {}
 	
 	public static List<String> getEnabledDependencies()
 	{
 		List<String> enabledDependencies = new ArrayList<>();
 		
-		if(Bukkit.getServer().getPluginManager().isPluginEnabled("SuperiorSkyblock"))
+		for(String softdependencies : ConditionalGUIMain.getPlugin().getDescription().getSoftDepend())
 		{
-			ConditionalGUIMain.getPlugin().getLogger().info("SuperiorSkyblock has been found! Hook enabled!");
-			enabledDependencies.add("SuperiorSkyblock");
+			if(Bukkit.getPluginManager().isPluginEnabled(softdependencies))
+			{
+				ConditionalGUIMain.getPlugin().getLogger().info(softdependencies + " has been found! Hook enabled!");
+				enabledDependencies.add(softdependencies);
+			}
+			else
+			{
+				ConditionalGUIMain.getPlugin().getLogger().info(softdependencies + " not found! Hook disabled!");
+			}
 		}
-		else
-		{
-			ConditionalGUIMain.getPlugin().getLogger().info("SuperiorSkyblock not found! Hook disabled!");
-		}
-		
-		if(Bukkit.getServer().getPluginManager().isPluginEnabled("mcMMO"))
-		{
-			ConditionalGUIMain.getPlugin().getLogger().info("mcMMO has been found! Hook enabled!");
-			enabledDependencies.add("mcMMO");
-		}
-		else
-		{
-			ConditionalGUIMain.getPlugin().getLogger().info("mcMMO not found! Hook disabled!");
-		}
-		
 		
 		return enabledDependencies;
 	}
 }
+

@@ -1,37 +1,44 @@
 gui:
-  title: "&dRankup GUI"
   borders:
     icon: BLACK_STAINED_GLASS_PANE
     name: " "
 
-ranks:
-  rank1: # This will server as the display name in the GUI
-    display-name-color: "&2" # Change the display name color in the GUI
-    icon: PLAYER_HEAD # Change the display icon in the GUI. Please, add "head-texture" option to get a custom head.
-    head-texture: "ZeTioZ" # Head texture either in Base64 or directly the player's nickname. You can find the Base64 on https://minecraft-heads.com/custom-heads/ on the very bottom of the page copy the "Value" field.
-    name: "The rank" # The name is NOT the display name in the GUI
-    lore: # Change the lore of the displayed item in the GUI. If you don't want a lore, delete and place [] instead.
-      - "Rank: {rank}"
-      - "Conditions to upgrade:"
-      - "    - 1000$"
-      - "    - 5 Mined blocks in total"
-      - "    - 15 Mined Diamond Ores"
-      - "    - 500XP"
-      - " "
-      - "Upgradable: {upgradable}"
-    rankup-message: # Message sent to the player once he rankup. If you don't want a rankup message, delete and place [] instead.
-      - "Good job {player}!"
-      - "You reach the rank \"{rank}\"!"
-    recaimable: true # It define if whether or not the upgrade is reclaimable
-    conditions: # Conditions to upgrade (Refer to the plugin's page to know which conditions are available)
-      money: 1000
-      mined_total: 5
-      # To add a block to watch on the block list, just add a new line with the following syntax: - "MATERIAL:AMOUNT"
-      # Materials can be found at the following link https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
-      mined_blocks:
-        blocks_list:
-          - "DIAMOND_ORE:15"
-      xp: 500
-    commands: # Commands that are sent as console once the player get the upgrade. If you don't want any command, delete and place [] instead.
-      - "eco take {player} 1000"
-      - "xp take {player} 500"
+# Little trick: Since you have to type "/cdg open <gui name>" to open a gui, you can add an alias into your commands.yml in your server root folder.
+# It should looks like this (you need to restart the server to make the alias effective).
+# aliases:
+#   mysuperguialias:
+#     - cdg open guiname
+
+gui1: # This will be used to open the GUI (/cdg open gui1). It's case sensitive. NB: The name "gui" is reserved to the border config. It will not be recognized as a gui.
+  title: "&2Super GUI" # Title of this single GUI
+  ranks:
+    rank1: # This will server as the display name in the GUI
+      display-name-color: "&2" # Change the display name color in the GUI
+      icon: PLAYER_HEAD # Change the display icon in the GUI. Please, add "head-texture" option to get a custom head.
+      head-texture: "ZeTioZ" # Head texture either in Base64 or directly the player's nickname. You can find the Base64 on https://minecraft-heads.com/custom-heads/ on the very bottom of the page copy the "Value" field.
+      name: "The rank" # The name is NOT the display name in the GUI
+      lore: # Change the lore of the displayed item in the GUI. If you don't want a lore, delete and place [] instead.
+        - "Rank: {rank}"
+        - "Conditions to upgrade:"
+        - "    - 1000$"
+        - "    - 5 Mined blocks in total"
+        - "    - 15 Mined Diamond Ores"
+        - "    - 500XP"
+        - " "
+        - "Upgradable: {upgradable}"
+      rankup-message: # Message sent to the player once he rankup. If you don't want a rankup message, delete and place [] instead.
+        - "Good job {player}!"
+        - "You reach the rank \"{rank}\"!"
+      recaimable: true # It define if whether or not the upgrade is reclaimable
+      conditions: # Conditions to upgrade (Refer to the plugin's page to know which conditions are available)
+        money: 1000
+        mined_total: 5
+        # To add a block to watch on the block list, just add a new line with the following syntax: - "MATERIAL:AMOUNT"
+        # Materials can be found at the following link https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+        mined_blocks:
+          blocks_list:
+            - "DIAMOND_ORE:15"
+        xp: 500
+      commands: # Commands that are sent as console once the player get the upgrade. If you don't want any command, delete and place [] instead.
+        - "eco take {player} 1000"
+        - "xp take {player} 500"

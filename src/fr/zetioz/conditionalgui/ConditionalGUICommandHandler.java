@@ -10,8 +10,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import fr.zetioz.conditionalgui.eventhandler.ConditionalGUIGUIHandler;
 import fr.zetioz.conditionalgui.utils.ColorUtils;
+import fr.zetioz.conditionalgui.utils.GUIOpenerUtils;
 
 public class ConditionalGUICommandHandler implements CommandExecutor
 {
@@ -31,22 +31,13 @@ public class ConditionalGUICommandHandler implements CommandExecutor
 	}
 	
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String msg, String[] args) {
+	public boolean onCommand(CommandSender sender, Command cmd, String msg, String[] args)
+	{
 		if(cmd.getName().equalsIgnoreCase("conditionalgui"))
 		{
 			if(args.length == 0)
 			{
-				if(sender instanceof Player)
-				{						
-					new ConditionalGUIGUIHandler().openGUI((Player) sender);
-				}
-				else
-				{
-					for(String line : ColorUtils.color(messagesFile.getStringList("errors.must-be-a-player")))
-					{
-						sender.sendMessage(prefix + line);
-					}
-				}
+				sendHelpPage(sender);
 			}
 			else if(args.length == 1)
 			{
@@ -64,18 +55,18 @@ public class ConditionalGUICommandHandler implements CommandExecutor
 					Bukkit.getPluginManager().disablePlugin(plugin);
 					Bukkit.getPluginManager().enablePlugin(plugin);
 				}
-				else if(args[0].equalsIgnoreCase("open"))
+			}
+			else if(args.length == 2 && args[0].equalsIgnoreCase("open"))
+			{
+				if(sender instanceof Player)
+				{						
+					GUIOpenerUtils.openGUI((Player) sender, args[1]);
+				}
+				else
 				{
-					if(sender instanceof Player)
-					{						
-						new ConditionalGUIGUIHandler().openGUI((Player) sender);
-					}
-					else
+					for(String line : ColorUtils.color(messagesFile.getStringList("errors.must-be-a-player")))
 					{
-						for(String line : ColorUtils.color(messagesFile.getStringList("errors.must-be-a-player")))
-						{
-							sender.sendMessage(prefix + line);
-						}
+						sender.sendMessage(prefix + line);
 					}
 				}
 			}

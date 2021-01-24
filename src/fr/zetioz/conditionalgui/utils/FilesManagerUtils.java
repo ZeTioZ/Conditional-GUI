@@ -36,7 +36,7 @@ public class FilesManagerUtils
     	}
     	else
     	{
-    		Bukkit.getLogger().severe("The file " + fileName + " doens't exists or hasn't been loaded yet !");
+    		Bukkit.getLogger().severe("The file " + fileName + " doens't exists or hasn't been loaded yet!");
     		throw new FileNotFoundException();
     	}
     }
@@ -61,16 +61,12 @@ public class FilesManagerUtils
     		}
     		
     		simpleYaml.put(fileName, new YamlConfiguration());
-    		
-    		try
-    		{
-    			simpleYaml.get(fileName).load(yamlFile);
-    		}
-    		catch (IOException | InvalidConfigurationException e)
-    		{
-    			plugin.getLogger().severe("An error occured while loading the " + fileName + " file!");
-    			e.printStackTrace();
-    		}
+    		simpleYaml.get(fileName).load(yamlFile);
+    	}
+    	catch (IOException | InvalidConfigurationException e)
+    	{
+    		plugin.getLogger().severe("An error occured while loading the " + fileName + " file!");
+    		e.printStackTrace();
     	}
     	catch (NullPointerException ex)
     	{
