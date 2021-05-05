@@ -215,7 +215,8 @@ public final class ConditionsCheckerUtils {
 						}
 						break;
 					case ISLAND_SIZE:
-						if(ConditionalGUIMain.getEnabledDependencies().contains("SuperiorSkyblock"))
+						if(ConditionalGUIMain.getEnabledDependencies().contains("SuperiorSkyblock")
+							|| ConditionalGUIMain.getEnabledDependencies().contains("SuperiorSkyblock2"))
 						{
 							int iSize = SuperiorSkyblockHook.getIslandSize(p);
 							int cSize = configsFile.getInt(GUIName + ".ranks." + rankName + ".conditions." + conditionsListRaw.get(i));

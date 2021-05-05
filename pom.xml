@@ -2,11 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>fr.zetioz</groupId>
   <artifactId>Conditional-GUI</artifactId>
-  <version>0.5.0</version>
+  <version>0.5.1</version>
   <name>Conditional-GUI</name>
   
   <repositories>
-    <!-- This adds the Spigot Maven repository to the build -->
     <repository>
         <id>spigot-repo</id>
         <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
